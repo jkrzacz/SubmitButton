@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish' // ✅ use only this
+apply plugin: 'maven-publish'
 
-group = 'com.github.jkrzacz' // ✅ consistent with JitPack coordinates
-version = '1.0.5' // ✅ update to latest version
+group = 'com.github.jkrzacz'
+version = '1.0.5'
 
 android {
     compileSdkVersion 23
@@ -36,7 +36,7 @@ task generateSourcesJar(type: Jar) {
 
 task generateJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += files(android.getBootClasspath().join(File.pathSeparator))
 }
 
 task generateJavadocsJar(type: Jar, dependsOn: generateJavadocs) {
@@ -48,8 +48,6 @@ artifacts {
     archives generateSourcesJar
     archives generateJavadocsJar
 }
-
-// ❌ Removed bintray block — deprecated and unnecessary
 
 publishing {
     publications {
