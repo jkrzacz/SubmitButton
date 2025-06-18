@@ -24,9 +24,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:23.4.0'
 }
 
 task generateSourcesJar(type: Jar) {
@@ -52,12 +52,11 @@ artifacts {
 publishing {
     publications {
         release(MavenPublication) {
-            from components.release
-
             groupId = 'com.github.jkrzacz'
             artifactId = 'submitbutton'
             version = '1.0.5'
 
+            artifact("$buildDir/outputs/aar/submitbutton-release.aar")
             artifact generateSourcesJar
             artifact generateJavadocsJar
         }

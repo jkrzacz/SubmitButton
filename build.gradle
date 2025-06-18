@@ -2,22 +2,19 @@
 
 buildscript {
     repositories {
-        maven {
-            url "https://maven.google.com"
-        }
-        jcenter()
+        google()
+		jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        // Use a compatible AGP version, for Gradle 7.5 it's recommended to use AGP 7.x
+        classpath 'com.android.tools.build:gradle:7.3.1' // example, latest stable at the time of writing
     }
 }
 
 allprojects {
     repositories {
-        maven {
-            url "https://maven.google.com"
-        }
+        google()
         jcenter()
         mavenCentral()
     }
