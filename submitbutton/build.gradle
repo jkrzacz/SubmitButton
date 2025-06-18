@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 group = 'me.spark' // Change this to match your package name
 version = '1.0.1' // Change this to match your version number
@@ -76,4 +77,16 @@ bintray {
         publicDownloadNumbers = true
     }
     configurations = ['archives']
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            from components.release
+
+            groupId = 'com.github.jkrzacz'
+            artifactId = 'submitbutton'
+            version = '1.0.4'
+        }
+    }
 }
