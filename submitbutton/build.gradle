@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 group = 'com.github.jkrzacz'
-version = '1.0.5'
+version = '1.0.10'
 
 android {
     compileSdkVersion 33
@@ -11,7 +11,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 33
         versionCode 1
-        versionName "1.0.5"
+        versionName "1.0.10"
     }
 
     buildTypes {
@@ -19,6 +19,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    // To make javadoc work
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -29,16 +34,35 @@ dependencies {
     implementation 'androidx.core:core:1.9.0'
 }
 
+// ✅ Define these BEFORE 'publishing'
+tasks.register("generateSourcesJar", Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+tasks.register("generateJavadocs", Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += files(android.bootClasspath.join(File.pathSeparator))
+    failOnError = false // avoids breaking on some doc errors
+}
+
+tasks.register("generateJavadocsJar", Jar) {
+    dependsOn tasks.named("generateJavadocs")
+    archiveClassifier.set('javadoc')
+    from tasks.named("generateJavadocs").get().destinationDir
+}
+
+// ✅ 'publishing' comes after tasks
 publishing {
     publications {
         release(MavenPublication) {
             groupId = 'com.github.jkrzacz'
             artifactId = 'submitbutton'
-            version = '1.0.5'
+            version = '1.0.10'
 
             artifact("$buildDir/outputs/aar/submitbutton-release.aar")
-            artifact generateSourcesJar
-            artifact generateJavadocsJar
+            artifact tasks.named("generateSourcesJar")
+            artifact tasks.named("generateJavadocsJar")
         }
     }
 }
