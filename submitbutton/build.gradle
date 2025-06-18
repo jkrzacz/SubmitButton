@@ -5,8 +5,7 @@ group = 'com.github.jkrzacz'
 version = '1.0.5'
 
 android {
-    compileSdkVersion 33  // upgrade SDK
-    buildToolsVersion "33.0.0"  // lub najnowsza wersja build tools
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 15
@@ -14,7 +13,7 @@ android {
         versionCode 1
         versionName "1.0.5"
     }
-    
+
     buildTypes {
         release {
             minifyEnabled false
@@ -25,29 +24,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core:1.9.0'  // ważne, żeby mieć core AndroidX
-}
-
-task generateSourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task generateJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task generateJavadocsJar(type: Jar, dependsOn: generateJavadocs) {
-    from generateJavadocs.destinationDir
-    classifier = 'javadoc'
-}
-
-artifacts {
-    archives generateSourcesJar
-    archives generateJavadocsJar
+    implementation 'androidx.core:core:1.9.0'
 }
 
 publishing {
